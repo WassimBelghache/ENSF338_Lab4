@@ -10,7 +10,7 @@ class PriorityQueueMergesort:
         if self.queue:
             return self.queue.pop(0)
         else:
-            raise IndexError("Priority queue is empty")
+            print("Priority queue is empty")
 
 
 #2 Priority Queue with Sorted Insertion:

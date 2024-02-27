@@ -8,3 +8,5 @@ The `reverse()` function exhibits a time complexity of O(n^2). The initial loop 
 **2. Design an optimized implementation of the same function with
 better performance. Discuss which changes you made and how
 they should be expected to result in a better function [0.3 pts]**
+
+In the optimized version, we temporarily store the next node while reversing the pointer of the current node to point to the previous node. We then move the previous node to the current node and the current node to the next node. This approach removes the need to access elements by position within the loop. As a result, the time complexity is linear, O(n), instead of quadratic, O(n^2).
