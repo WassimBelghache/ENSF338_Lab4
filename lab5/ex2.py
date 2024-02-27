@@ -43,12 +43,44 @@ def generate_random_task_list(num_tasks):
             tasks.append("dequeue")
     return tasks
 
-# Example usage:
-random_tasks = generate_random_task_list(1000)
-print(random_tasks[:10])  # Print the first 10 tasks
+#4
+import timeit
 
+def generate_random_task_list(num_tasks):
+    tasks = []
+    for _ in range(num_tasks):
+        if random.random() < 0.7:
+            tasks.append("enqueue")
+        else:
+            tasks.append("dequeue")
+    return tasks
 
+def measure_performance(pq_class, task_list):
+    pq = pq_class()
+    for task in task_list:
+        if task == "enqueue":
+            pq.enqueue(random.randint(1, 100))  # Example: Enqueue random integer
+        else:
+            pq.dequeue()
 
+if __name__ == "__main__":
+    num_lists = 100
+    num_tasks_per_list = 1000
+
+    random_task_lists = [generate_random_task_list(num_tasks_per_list) for _ in range(num_lists)]
+
+    # Measure performance for PriorityQueueMergesort
+    mergesort_time = timeit.timeit(lambda: measure_performance(PriorityQueueMergesort, random_task_lists), number=1)
+    print(f"PriorityQueueMergesort execution time: {mergesort_time:.6f} seconds")
+
+    # Measure performance for PriorityQueueSortedInsert
+    sorted_insert_time = timeit.timeit(lambda: measure_performance(PriorityQueueSortedInsert, random_task_lists), number=1)
+    print(f"PriorityQueueSortedInsert execution time: {sorted_insert_time:.6f} seconds")
+
+#5 
+    '''the PriorityQueue Insert implementation is expected to be faster because it avoids sorting the entire 
+    array after each enqueue operation, instead only inserting the new element in the correct position.'''
+    
 
 
 
