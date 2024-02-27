@@ -21,3 +21,5 @@ def processdata(li):
         li[i] *= 2             
 
 # With this modification the complexity for best, wordt, and average is all O(n).
+# since the for loop will always be run. 
+
