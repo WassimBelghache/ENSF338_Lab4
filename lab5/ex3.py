@@ -56,7 +56,7 @@ def measure_performance(stack_impl, tasks):
     stack = stack_impl()
     for task in tasks:
         if task == 'push':
-            stack.push(1)  # Pushing 1 as an arbitrary item
+            stack.push(1)
         else:
             stack.pop()
 
@@ -79,3 +79,7 @@ plt.xlabel('Time (seconds)')
 plt.ylabel('Frequency')
 plt.title('Distribution of Stack Implementation Times')
 plt.show()
+
+# it is shown in the plot that a stack implemented with linked lists generally takes more time
+# than a stack implentation with Arrays. The higher the frequency for both implementations the higher the
+# efficiency and the less time it takes to run.
