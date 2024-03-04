@@ -1,3 +1,5 @@
+import sys
+
 class Stack:
     def __init__(self):
         self.items = []
@@ -8,44 +10,30 @@ class Stack:
     def pop(self):
         return self.items.pop()
 
-    def is_empty(self):
-        return len(self.items) == 0
-
     def peek(self):
-        if not self.is_empty():
-            return self.items[-1]
+        return self.items[-1]
 
-def evaluate_expression(expression):
-    stack = Stack()
-    for token in expression.split():
-        if token.isdigit():
-            stack.push(int(token))
-        elif token in ['+', '-', '*', '/']:
-            operand2 = stack.pop()
-            operand1 = stack.pop()
-            result = apply_operation(token, operand1, operand2)
-            stack.push(result)
-        elif token == '(':
-            pass
-        elif token == ')':
-            pass
-    return stack.pop()
+if len(sys.argv) != 2:
+    sys.exit(1)
 
-def apply_operation(operator, operand1, operand2):
-    if operator == '+':
-        return operand1 + operand2
-    elif operator == '-':
-        return operand1 - operand2
-    elif operator == '*':
-        return operand1 * operand2
-    elif operator == '/':
-        return operand1 / operand2
+operations_list = ['+','-','*','/']
+expression = sys.argv[1]
 
-if __name__ == "__main__":
-    import sys
-    if len(sys.argv) != 2:
-        print("Usage: python ex1.py 'expression'")
-        sys.exit(1)
-    expression = sys.argv[1]
-    result = evaluate_expression(expression)
-    print(result)
+stack = Stack()
+for char in expression:
+    if char == '(':
+        continue
+    elif char in operations_list:
+        stack.push(char)
+    elif char.isdigit():
+        stack.push(char)
+    elif char == ')':
+        num2 = stack.pop()
+        num1 = stack.pop()
+        operation = stack.pop()
+        new_expression = str(num1) + ' ' + operation + ' ' + str(num2)
+        calculate = int(eval(new_expression))
+        stack.push(calculate) 
+
+
+print("Result:", stack.pop())
