@@ -53,7 +53,7 @@ def measure_performance(queue_class, tasks):
     start_time = timeit.default_timer()
     for task in tasks:
         if task == 'enqueue':
-            queue.enqueue(1)  # Enqueueing a dummy item
+            queue.enqueue(1)  
         else:
             queue.dequeue()
     end_time = timeit.default_timer()
@@ -81,4 +81,7 @@ plt.show()
 print("Mean time for Array Queue:", sum(array_times) / len(array_times))
 print("Mean time for Linked List Queue:", sum(linked_list_times) / len(linked_list_times))
 
-
+'''The graph clearly shows that the linked list implementation performs much faster than the array 
+implementation in this test. This outcome was anticipated, as the array implementation has O(1) complexity 
+for dequeue operations and O(n) for enqueue operations, whereas the linked list implementation has the opposite. 
+Our test is designed to enqueue much more frequently than dequeue.'''
