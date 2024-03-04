@@ -1,5 +1,3 @@
-import sys
-
 class Stack:
     def __init__(self):
         self.items = []
@@ -10,47 +8,44 @@ class Stack:
     def pop(self):
         return self.items.pop()
 
-    def peek(self):
-        return self.items[-1]
-
     def is_empty(self):
         return len(self.items) == 0
 
+    def peek(self):
+        if not self.is_empty():
+            return self.items[-1]
+
 def evaluate_expression(expression):
     stack = Stack()
-    tokens = expression.split()
-    
-    for token in tokens:
-        if token == '(':
-            continue
-        elif token.isdigit():
+    for token in expression.split():
+        if token.isdigit():
             stack.push(int(token))
         elif token in ['+', '-', '*', '/']:
-            stack.push(token)
-        elif token == ')':
-            operand = stack.pop()
-            e2 = stack.pop()
-            e1 = stack.pop()
-            result = apply_operation(e1, e2, operand)
+            operand2 = stack.pop()
+            operand1 = stack.pop()
+            result = apply_operation(token, operand1, operand2)
             stack.push(result)
-
+        elif token == '(':
+            pass
+        elif token == ')':
+            pass
     return stack.pop()
 
-def apply_operation(e1, e2, operand):
-    if operand == '+':
-        return e1 + e2
-    elif operand == '-':
-        return e1 - e2
-    elif operand == '*':
-        return e1 * e2
-    elif operand == '/':
-        return e1 / e2
+def apply_operation(operator, operand1, operand2):
+    if operator == '+':
+        return operand1 + operand2
+    elif operator == '-':
+        return operand1 - operand2
+    elif operator == '*':
+        return operand1 * operand2
+    elif operator == '/':
+        return operand1 / operand2
 
 if __name__ == "__main__":
+    import sys
     if len(sys.argv) != 2:
-        print("Usage: python ex1.py '<expression>'")
+        print("Usage: python ex1.py 'expression'")
         sys.exit(1)
-
     expression = sys.argv[1]
     result = evaluate_expression(expression)
     print(result)
