@@ -43,28 +43,51 @@ class CircularQueueArray:
         print(f"peek {item}")
         return item
 
-# Code to Test
+# Code of operations to test
 cq = CircularQueueArray(5)
+
 cq.enqueue(1)
 cq.enqueue(2)
 cq.enqueue(3)
-cq.peek()
-cq.dequeue()
-cq.peek()
 cq.enqueue(4)
 cq.enqueue(5)
-cq.enqueue(6)
+
 cq.dequeue()
 cq.dequeue()
 cq.dequeue()
-cq.dequeue()
+
 cq.peek()
+
 cq.enqueue(7)
-cq.peek()
 cq.enqueue(8)
 cq.enqueue(9)
+
+cq.dequeue()
+cq.dequeue()
+
 cq.peek()
+
+cq.enqueue(10)
+cq.enqueue(11)
+cq.enqueue(12)
+cq.enqueue(13)
+cq.enqueue(14)
+
 cq.dequeue()
 cq.dequeue()
 cq.dequeue()
+cq.dequeue()
+
+cq.peek()
+
+cq.enqueue(15)
+cq.enqueue(16)
+cq.enqueue(17)
+cq.enqueue(18)
+cq.enqueue(19)
+
+cq.dequeue()
+cq.dequeue()
+cq.dequeue()
+
 cq.peek()
