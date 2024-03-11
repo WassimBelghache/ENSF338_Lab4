@@ -79,3 +79,14 @@ total_binary_search_time = sum(binary_search_times)
 # Results
 print(f'BST Search - Average Time: {avg_bst_search_time}, Total Time: {total_bst_search_time}')
 print(f'Binary Search - Average Time: {avg_binary_search_time}, Total Time: {total_binary_search_time}')
+
+'''
+After doing several test runs it can be concluded that BST search performs faster compared to Binary search. Although,
+not by a big gap. In the BST implementation, the elements were inserted in a way that balanced the tree, ensuring that 
+each subtree is roughly the same size. This balanced structure allows for faster search times as the height of the tree 
+is minimized, resulting in a time complexity of O(log n) for search operations.
+
+On the other hand, in the binary search implementation, the elements were simply sorted and then searched using binary search. 
+While binary search also has a time complexity of O(log n), the sorting process adds an additional O(n log n) complexity, which 
+may have contributed to slightly slower performance compared to the BST.
+'''
