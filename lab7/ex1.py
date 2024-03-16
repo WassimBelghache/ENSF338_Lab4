@@ -84,7 +84,7 @@ for _ in range(1000):
 
 plt.figure(figsize=(10, 6))
 plt.scatter(balance_points, time_taken, alpha=0.7, edgecolors='w', linewidth=0.5)
-plt.xlabel('Max Node Balance')
+plt.xlabel('Absolute Balance')
 plt.ylabel('Average Search Time')
 plt.title('Tree Balance vs Search Performance')
 plt.grid(True)
