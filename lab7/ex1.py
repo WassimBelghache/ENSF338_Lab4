@@ -75,7 +75,7 @@ for _ in range(1000):
         search_tree.find_value(number)
     timer_end = time.time()
     
-    time_for_search = (timer_end - timer_start) / len(numbers_to_search) * 1e6  # Multiplying by 1e^-6 is for displaying the Y-Axis of search time in microseconds
+    time_for_search = (timer_end - timer_start) / len(numbers_to_search) 
     max_tree_balance = search_tree.deepest_imbalance(search_tree.root_node)
     
     balance_points.append(max_tree_balance)
