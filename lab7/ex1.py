@@ -59,25 +59,23 @@ class Tree:
         return max(abs(self.node_balance(node)), self.deepest_imbalance(node.left_child), self.deepest_imbalance(node.right_child))
 
 
-numbers_to_search = [list(range(1000)) for _ in range(1000)]
-for number_list in numbers_to_search:
-    random.shuffle(number_list)
-
-
 balance_points = []
 time_taken = []
 
-for number_list in numbers_to_search:
+for _ in range(1000):
+    numbers_to_search = list(range(1000))
+    random.shuffle(numbers_to_search)
+
     search_tree = Tree()
-    for number in number_list:
+    for number in numbers_to_search:
         search_tree.add_node(number)
     
     timer_start = time.time()
-    for number in number_list:
+    for number in numbers_to_search:
         search_tree.find_value(number)
     timer_end = time.time()
     
-    time_for_search = (timer_end - timer_start) / len(number_list) * 1e6  # Multiplying by 1e^-6 is for dispaying the Y-Axis of search time in microseconds
+    time_for_search = (timer_end - timer_start) / len(numbers_to_search) * 1e6  # Multiplying by 1e^-6 is for displaying the Y-Axis of search time in microseconds
     max_tree_balance = search_tree.deepest_imbalance(search_tree.root_node)
     
     balance_points.append(max_tree_balance)
