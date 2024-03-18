@@ -61,11 +61,11 @@ class BinarySearchTree:
 
         if self.pivot_node is None:
             if setup_flag == 0:
-                print("Case 1 -  No pivot found")
+                print("Case 1 - No pivot found")
         else:
             if pivot_balance_value >=1:
                 if node_inserted.node_value < self.pivot_node.node_value and setup_flag == 0:
-                    print("Case 2 -  Pivot exists and the node was added to the shorter subtree")
+                    print("Case 2 - Pivot exists and the node was added to the shorter subtree")
                 elif node_inserted.node_value > self.pivot_node.node_value and setup_flag == 0:
                     print("Case 3 - not supported")
 
@@ -122,7 +122,6 @@ bst = BinarySearchTree()
 bst.insert_node(10, 1)
 bst.insert_node(8, 1)
 bst.insert_node(11, 1)
-print("Message from BST after insertion of node: ", end='')
 bst.insert_node(6, 0)
 
 
@@ -131,7 +130,6 @@ BST.insert_node(10,1)
 BST.insert_node(12,1)
 BST.insert_node(13,1)
 BST.insert_node(9,1)
-print("Message from BST after insertion of node: ", end= '')
 BST.insert_node(8,0)
 
 BST = BinarySearchTree()
@@ -139,5 +137,4 @@ BST.insert_node(8,1)
 BST.insert_node(9,1)
 BST.insert_node(10,1)
 BST.insert_node(11,1)
-print("Message from BST after insertion of node: ", end='')
 BST.insert_node(12,0)
