@@ -36,7 +36,7 @@ class AVLTree:
             
         #Case 2
         if balance_factor < -1 and key > current_node.right.key:
-            print("\nCase 2 Complete - Pivot exists. The node was added to the shorter subtree\n")
+            print("Case 2 Complete - Pivot exists. The node was added to the shorter subtree")
             return self._left_rotate(current_node)
 
         #Case 3a
@@ -47,7 +47,7 @@ class AVLTree:
 
         #Case 3b
         if balance_factor < -1 and key < current_node.right.key:
-            print("\nCase #3b Complete - not supported")
+            print("Case #3b Complete - not supported")
             current_node.right = self._right_rotate(current_node.right)
             return self._left_rotate(current_node)
 
