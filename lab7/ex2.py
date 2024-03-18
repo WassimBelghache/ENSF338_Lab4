@@ -1,79 +1,143 @@
-import random
-import matplotlib.pyplot as plt
-import time
 
-class Node:
-    def __init__(self, value):
-        self.left_child = None
-        self.right_child = None
-        self.data = value
-        self.height = 1 
+class TreeNode:
+    def __init__(self, node_value, parent_node=None, left_child=None, right_child=None):
+        self.node_value = node_value
+        self.parent_node = parent_node
+        self.left_child = left_child
+        self.right_child = right_child
+        self.node_balance = 0
 
-class Tree:
+class BinarySearchTree:
     def __init__(self):
         self.root_node = None
+        self.pivot_node = None
 
-    def add_node(self, value):
-        if not self.root_node:
-            self.root_node = Node(value)
+    def insert_node(self, node_value, setup_flag):
+        current_node = self.root_node
+        parent_node = None
+
+        while current_node is not None:
+            parent_node = current_node
+            if node_value <= current_node.node_value:
+                current_node = current_node.left_child
+            else:
+                current_node = current_node.right_child
+
+        new_node = TreeNode(node_value, parent_node)
+        if parent_node is None:
+            self.root_node = new_node
+        elif node_value <= parent_node.node_value:
+            parent_node.left_child = new_node
         else:
-            self.root_node = self.place_node(self.root_node, value)
+            parent_node.right_child = new_node
 
-    def place_node(self, current, value):
-        if not current:
-            return Node(value)
-        if value < current.data:
-            current.left_child = self.place_node(current.left_child, value)
+        self.update_balances(new_node, setup_flag)
+        return new_node
+
+    def search_node(self, node_value):
+        current_node = self.root_node
+        while current_node is not None:
+            if node_value == current_node.node_value:
+                return current_node
+            elif node_value <= current_node.node_value:
+                current_node = current_node.left_child
+            else:
+                current_node = current_node.right_child
+        return None
+
+    def update_balances(self, inserted_node, setup_flag):
+        self.pivot_node = None
+        node_inserted = inserted_node
+        parent_node = inserted_node.parent_node
+        pivot_balance_value = 0
+
+        while inserted_node != None:
+            if inserted_node.node_balance >=1 or inserted_node.node_balance<=-1:
+                if self.pivot_node is None:
+                    self.pivot_node = inserted_node
+                    pivot_balance_value = inserted_node.node_balance
+            inserted_node.node_balance = self.calculate_balance(inserted_node)
+            inserted_node = inserted_node.parent_node
+
+        if self.pivot_node is None:
+            if setup_flag == 0:
+                print("Case 1 -  No pivot found")
         else:
-            current.right_child = self.place_node(current.right_child, value)
+            if pivot_balance_value >=1:
+                if node_inserted.node_value < self.pivot_node.node_value and setup_flag == 0:
+                    print("Case 2 -  Pivot exists and the node was added to the shorter subtree")
+                elif node_inserted.node_value > self.pivot_node.node_value and setup_flag == 0:
+                    print("Case 3 - not supported")
 
-        current.height = 1 + max(self.node_height(current.left_child), self.node_height(current.right_child))
+            elif pivot_balance_value <=-1:
+                if node_inserted.node_value > self.pivot_node.node_value and setup_flag == 0:
+                    print("Case 2 - Pivot exists and the node was added to the shorter subtree")
+                elif node_inserted.node_value < self.pivot_node.node_value and setup_flag == 0:
+                    print("Case 3 - not supported")
 
-        balance = self.node_balance(current)
+    def calculate_balance(self, tree_node):
+        left_subtree_height = self.calculate_height(tree_node.left_child)
+        right_subtree_height = self.calculate_height(tree_node.right_child)
+        return right_subtree_height - left_subtree_height
 
-        # Case 1: Pivot does not exist
-        if balance > 1 and value < current.left_child.data:
-            print("Case #1: Pivot not detected")
-            return self.right_rotate(current)
-
-        # Case 2: Pivot exists, and a node was added to the shorter subtree
-        if balance < -1 and value > current.right_child.data:
-            print("Case #2: A pivot exists, and a node was added to the shorter subtree")
-            return self.left_rotate(current)
-
-        return current
-
-    def left_rotate(self, z):
-        y = z.right_child
-        T2 = y.left_child
-        y.left_child = z
-        z.right_child = T2
-        z.height = 1 + max(self.node_height(z.left_child), self.node_height(z.right_child))
-        y.height = 1 + max(self.node_height(y.left_child), self.node_height(y.right_child))
-        return y
-
-    def right_rotate(self, y):
-        x = y.left_child
-        T2 = x.right_child
-        x.right_child = y
-        y.left_child = T2
-        y.height = 1 + max(self.node_height(y.left_child), self.node_height(y.right_child))
-        x.height = 1 + max(self.node_height(x.left_child), self.node_height(x.right_child))
-        return x
-
-    def node_height(self, node):
-        if not node:
+    def calculate_height(self, tree_node):
+        if tree_node is None:
             return 0
-        return node.height
 
-    def node_balance(self, node):
-        if not node:
+        node_queue = [tree_node]
+        tree_height = 0
+
+        while len(node_queue) > 0:
+            queue_size = len(node_queue)
+
+            for i in range(queue_size):
+                current_node = node_queue.pop(0)
+
+                if current_node.left_child:
+                    node_queue.append(current_node.left_child)
+                if current_node.right_child:
+                    node_queue.append(current_node.right_child)
+            tree_height += 1
+        return tree_height
+
+    def calculate_largest_balance(self):
+        if self.root_node is None:
             return 0
-        return self.node_height(node.left_child) - self.node_height(node.right_child)
+        balance_list = []
+        node_stack = [self.root_node]
+        while len(node_stack) > 0:
+            tree_node = node_stack.pop()
+            balance_value = abs(tree_node.node_balance)
+            balance_list.append(balance_value)
 
-# Test cases
-tree = Tree()
-tree.add_node(10)  
-tree.add_node(20)  
-tree.add_node(30)  
-tree.add_node(40)  
+            if tree_node.right_child:
+                node_stack.append(tree_node.right_child)
+            if tree_node.left_child:
+                node_stack.append(tree_node.left_child)
+
+        max_balance_value = max(balance_list)
+        return max_balance_value
+
+bst = BinarySearchTree()
+bst.insert_node(10, 1)
+bst.insert_node(8, 1)
+bst.insert_node(11, 1)
+print("Message from BST after insertion of node: ", end='')
+bst.insert_node(6, 0)
+
+
+BST = BinarySearchTree()
+BST.insert_node(10,1)
+BST.insert_node(12,1)
+BST.insert_node(13,1)
+BST.insert_node(9,1)
+print("Message from BST after insertion of node: ", end= '')
+BST.insert_node(8,0)
+
+BST = BinarySearchTree()
+BST.insert_node(8,1)
+BST.insert_node(9,1)
+BST.insert_node(10,1)
+BST.insert_node(11,1)
+print("Message from BST after insertion of node: ", end='')
+BST.insert_node(12,0)

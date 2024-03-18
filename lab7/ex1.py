@@ -1,92 +1,87 @@
 import random
+import timeit
 import matplotlib.pyplot as plt
-import time
 
-class Node:
-    def __init__(self, value):
-        self.left_child = None
-        self.right_child = None
-        self.data = value
+class TreeNode:
+    def __init__(self, value, parent_node=None, left_node=None, right_node=None):
+        self.parent_node = parent_node
+        self.value = value
+        self.left_node = left_node
+        self.right_node = right_node
 
-class Tree:
+class BinarySearchTree:
     def __init__(self):
         self.root_node = None
 
-    def add_node(self, value):
+    def insert_node(self, value):
         if not self.root_node:
-            self.root_node = Node(value)
-        else:
-            self.place_node(self.root_node, value)
-
-    def place_node(self, current, value):
-        if value < current.data:
-            if not current.left_child:
-                current.left_child = Node(value)
+            self.root_node = TreeNode(value)
+            return
+        
+        current_node = self.root_node
+        while True:
+            parent_node = current_node
+            if value < current_node.value:
+                if not current_node.left_node:
+                    current_node.left_node = TreeNode(value, parent_node=current_node)
+                    break
+                current_node = current_node.left_node
             else:
-                self.place_node(current.left_child, value)
-        else:
-            if not current.right_child:
-                current.right_child = Node(value)
+                if not current_node.right_node:
+                    current_node.right_node = TreeNode(value, parent_node=current_node)
+                    break
+                current_node = current_node.right_node
+
+    def search_node(self, value):
+        current_node = self.root_node
+        while current_node is not None:
+            if value == current_node.value:
+                return True
+            elif value < current_node.value:
+                current_node = current_node.left_node
             else:
-                self.place_node(current.right_child, value)
+                current_node = current_node.right_node
+        return False
 
-    def find_value(self, value):
-        return self.look_for_value(self.root_node, value)
+    def max_balance(self):
+        max_balance_value = 0
+        node_stack = [(self.root_node, 0)]
+        while node_stack:
+            node, depth_value = node_stack.pop()
+            if node:
+                current_balance_value = depth_value - min(self._depth(node.left_node), depth_value)
+                max_balance_value = max(max_balance_value, current_balance_value)
+                node_stack.append((node.right_node, depth_value + 1))
+                node_stack.append((node.left_node, depth_value + 1))
+        return max_balance_value
 
-    def look_for_value(self, current, value):
-        if not current:
-            return False
-        if value == current.data:
-            return True
-        elif value < current.data:
-            return self.look_for_value(current.left_child, value)
-        else:
-            return self.look_for_value(current.right_child, value)
-
-    def node_height(self, node):
+    def _depth(self, node):
         if not node:
             return 0
-        return 1 + max(self.node_height(node.left_child), self.node_height(node.right_child))
+        depth_value = 0
+        while node:
+            depth_value += 1
+            node = node.right_node
+        return depth_value
 
-    def node_balance(self, node):
-        if not node:
-            return 0
-        return self.node_height(node.left_child) - self.node_height(node.right_child)
+bst = BinarySearchTree()
+for i in range(1000):
+    bst.insert_node(i)
 
-    def deepest_imbalance(self, node):
-        if not node:
-            return 0
-        return max(abs(self.node_balance(node)), self.deepest_imbalance(node.left_child), self.deepest_imbalance(node.right_child))
-
-
-balance_points = []
-time_taken = []
-
+time_values = []
+balance_values = []
 for _ in range(1000):
-    numbers_to_search = list(range(1000))
-    random.shuffle(numbers_to_search)
+    task_list = list(range(1000))
+    random.shuffle(task_list)
+    start_time_value = timeit.default_timer()
+    for item in task_list:
+        bst.search_node(item)
+    end_time_value = timeit.default_timer()
+    time_values.append(end_time_value - start_time_value)
+    balance_values.append(bst.max_balance())
 
-    search_tree = Tree()
-    for number in numbers_to_search:
-        search_tree.add_node(number)
-    
-    timer_start = time.time()
-    for number in numbers_to_search:
-        search_tree.find_value(number)
-    timer_end = time.time()
-    
-    time_for_search = (timer_end - timer_start) / len(numbers_to_search) 
-    max_tree_balance = search_tree.deepest_imbalance(search_tree.root_node)
-    
-    balance_points.append(max_tree_balance)
-    time_taken.append(time_for_search)
-
-
-plt.figure(figsize=(10, 6))
-plt.scatter(balance_points, time_taken, alpha=0.7, edgecolors='w', linewidth=0.5)
+plt.scatter(balance_values, time_values)
+plt.title('Scatter plot of Absolute Balance vs Search Time')
 plt.xlabel('Absolute Balance')
-plt.ylabel('Average Search Time')
-plt.title('Tree Balance vs Search Performance')
-plt.grid(True)
-plt.tight_layout()
+plt.ylabel('Search Time (seconds)')
 plt.show()
