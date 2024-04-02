@@ -40,7 +40,6 @@ class Graph:
                 if not lines:
                     return None
                 
-                # Check if the graph type is undirected
                 if 'strict graph' not in lines[0]:
                     return None
                 
@@ -69,10 +68,9 @@ class Graph:
             return None
 
 # Example usage:
-# Create a graph
 g = Graph()
 
-# Add nodes
+#adding nodes
 node1 = g.addNode("node1")
 node2 = g.addNode("node2")
 node3 = g.addNode("node3")
@@ -81,7 +79,7 @@ node4 = g.addNode("node4")
 print("Nodes after adding:")
 print(g.adjacency_list)
 
-# Add edges
+#adding edges
 g.addEdge(node1, node2, weight=5)
 g.addEdge(node2, node3)
 g.addEdge(node4, node3, weight=6)
@@ -89,19 +87,19 @@ g.addEdge(node4, node3, weight=6)
 print("Edges after adding:")
 print(g.adjacency_list)
 
-# Remove node
+#removing node
 g.removeNode(node4)
 
 print("Nodes after removing node 4:")
 print(g.adjacency_list)
 
-# Remove edge
+#remoiving edge
 g.removeEdge(node1, node2)
 
 print("Edges after removing edge between node 1 and node 2:")
 print(g.adjacency_list)
 
-# Import graph from file
+#importing graph from file
 result = g.importFromFile("graphviz_file.txt")
 print("Graph import result:", result)
 
