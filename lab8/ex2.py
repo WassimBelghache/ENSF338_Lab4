@@ -98,3 +98,7 @@ if __name__ == "__main__":
 
     plot_histogram(slow_times, "Slow Algorithm Execution Times")
     plot_histogram(fast_times, "Fast Algorithm Execution Times")
+    
+# Q4 results:
+# the histogram shows 3 bars indicating 3 different times: 0.2 x e^-5s, 0.6 x e^-5s, and 
+# and 1.3 x e^-5s. All times have a frequency of 1.
